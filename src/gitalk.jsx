@@ -468,6 +468,11 @@ class GitalkComponent extends Component {
     })
   }
 
+  handleToIssue = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    window.location.href = this.state.issue.html_url
+  }
 
   handlePopup = e => {
     e.preventDefault()
@@ -734,17 +739,9 @@ class GitalkComponent extends Component {
             </div>
           </div>
         }
+        {/* 右上角用户信息显示 */}
         <div className="gt-user">
-          {user ?
-            <div className={isPopupVisible ? 'gt-user-inner is--poping' : 'gt-user-inner'} onClick={this.handlePopup}>
-              <span className="gt-user-name">{user.login}</span>
-              <Svg className="gt-ico-arrdown" name="arrow_down"/>
-            </div> :
-            <div className={isPopupVisible ? 'gt-user-inner is--poping' : 'gt-user-inner'} onClick={this.handlePopup}>
-              <span className="gt-user-name">{this.i18n.t('anonymous')}</span>
-              <Svg className="gt-ico-arrdown" name="arrow_down"/>
-            </div>
-          }
+          <a href={issue && issue.html_url} target="_blank" rel="noopener noreferrer">点击跳转评论</a>
         </div>
       </div>
     )
@@ -768,7 +765,6 @@ class GitalkComponent extends Component {
           isNoInit ? [
             this.noInit()
           ] : [
-            this.header(),
             this.comments()
           ])
         }

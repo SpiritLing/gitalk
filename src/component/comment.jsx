@@ -42,27 +42,13 @@ export default class Comment extends Component {
       language,
       commentedText = '',
       admin = [],
-      replyCallback,
-      likeCallback
+      replyCallback
     } = this.props
     const enableEdit = user && comment.user.login === user.login
     const isAdmin = ~[]
       .concat(admin)
       .map(a => a.toLowerCase())
       .indexOf(comment.user.login.toLowerCase())
-    const reactions = comment.reactions
-
-    let reactionTotalCount = ''
-    if (reactions && reactions.totalCount) {
-      reactionTotalCount = reactions.totalCount
-      if (
-        reactions.totalCount === 100 &&
-        reactions.pageInfo &&
-        reactions.pageInfo.hasNextPage
-      ) {
-        reactionTotalCount = '100+'
-      }
-    }
 
     return (
       <div ref={node => { this.node = node }} className={`gt-comment ${isAdmin ? 'gt-comment-admin' : ''}`}>
@@ -91,40 +77,6 @@ export default class Comment extends Component {
                 }
               )}
             </span>
-
-            {reactions && (
-              <a className="gt-comment-like" title="Like" onClick={likeCallback}>
-                {reactions.viewerHasReacted ? (
-                  <Svg
-                    className="gt-ico-heart"
-                    name="heart_on"
-                    text={reactionTotalCount}
-                  />
-                ) : (
-                  <Svg
-                    className="gt-ico-heart"
-                    name="heart"
-                    text={reactionTotalCount}
-                  />
-                )}
-              </a>
-            )}
-
-            {enableEdit ? (
-              <a
-                href={comment.html_url}
-                className="gt-comment-edit"
-                title="Edit"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Svg className="gt-ico-edit" name="edit" />
-              </a>
-            ) : (
-              <a className="gt-comment-reply" title="Reply" onClick={replyCallback}>
-                <Svg className="gt-ico-reply" name="reply" />
-              </a>
-            )}
           </div>
           <div
             className="gt-comment-body markdown-body"
